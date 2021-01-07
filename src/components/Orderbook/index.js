@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './styles.scss';
 
+
 class OrderBook extends React.Component {
   constructor(props) {
     super(props);
@@ -39,23 +40,22 @@ class OrderBook extends React.Component {
 
   render() {
     let { bids, asks, websocketConnected, currentMarket } = this.props;
-
     return (
       <div className="orderbook flex-column flex-1">
         <div className="flex header text-secondary">
-          <div className="col-6 text-right">Amount</div>
+          <div className="col-6 ">Amount</div>
           <div className="col-6 text-right">Price</div>
         </div>
         <div className="flex-column flex-1">
           <div className="asks flex-column flex-column-reverse flex-1 overflow-hidden">
             {asks
-              .slice(-20)
+              .slice(-16)
               .reverse()
               .toArray()
-              .map(([price, amount]) => {
+              .map(([price, amount],i) => {
                 return (
-                  <div className="ask flex align-items-center" key={price.toString()}>
-                    <div className="col-6 orderbook-amount text-right">
+                  <div className={`ask flex align-items-center ${i%2===0 ? "bg-blueishWhite": ""}`} key={price.toString()}>
+                    <div className="col-6 orderbook-amount ">
                       {amount.toFixed(currentMarket.amountDecimals)}
                     </div>
                     <div className="col-6 text-danger text-right">{price.toFixed(currentMarket.priceDecimals)}</div>
@@ -63,10 +63,13 @@ class OrderBook extends React.Component {
                 );
               })}
           </div>
-          <div className="status border-top border-bottom">
+          <div className="status border-top border-bottom bg-blueishWhite">
             {websocketConnected ? (
-              <div className="col-6 text-success">
-                <i className="fa fa-circle" aria-hidden="true" /> RealTime
+              <div className="col-12 text-success">
+                <i className="fa fa-circle" aria-hidden="true" /> 
+               <span className={`pl-2 text-blue`}>
+                 Last Traded Price: {currentMarket.lastPrice}
+               </span> 
               </div>
             ) : (
               <div className="col-6 text-danger">
@@ -76,12 +79,12 @@ class OrderBook extends React.Component {
           </div>
           <div className="bids flex-column flex-1 overflow-hidden">
             {bids
-              .slice(0, 20)
+              .slice(0, 16)
               .toArray()
-              .map(([price, amount]) => {
+              .map(([price, amount],i) => {
                 return (
-                  <div className="bid flex align-items-center" key={price.toString()}>
-                    <div className="col-6 orderbook-amount text-right">
+                  <div className={`bid flex align-items-center ${i%2!==0 ? "bg-blueishWhite": ""}`} key={price.toString()}>
+                    <div className={`col-6 orderbook-amount`}>
                       {amount.toFixed(currentMarket.amountDecimals)}
                     </div>
                     <div className="col-6 text-success text-right">{price.toFixed(currentMarket.priceDecimals)}</div>
