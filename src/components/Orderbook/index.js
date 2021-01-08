@@ -7,6 +7,9 @@ class OrderBook extends React.Component {
     super(props);
     this.lastUpdatedAt = null;
     this.forceRenderTimer = null;
+    this.state = {
+      currentTab: 'all'
+    };
   }
 
   // max 1 render in 1 second
@@ -39,52 +42,92 @@ class OrderBook extends React.Component {
 
   render() {
     let { bids, asks, websocketConnected, currentMarket } = this.props;
-
     return (
-      <div className="orderbook flex-column flex-1">
-        <div className="flex header text-secondary">
-          <div className="col-6 text-right">Amount</div>
-          <div className="col-6 text-right">Price</div>
+      <div className="orderbook flex-column flex-1 border mr-2 ">
+        <div className="border-bottom d-flex">
+          <span
+            onClick={() => this.setState({ currentTab: 'all' })}
+            className={`px-2 py-3 selection-container ${this.state.currentTab === 'all' ? 'active' : ''}`}>
+            ALL
+          </span>
+          <span
+            onClick={() => this.setState({ currentTab: 'sell' })}
+            className={`px-2 py-3 selection-container ${this.state.currentTab === 'sell' ? 'active' : ''}`}>
+            SELL
+          </span>
+          <span
+            onClick={() => this.setState({ currentTab: 'buy' })}
+            className={`px-2 py-3 selection-container ${this.state.currentTab === 'buy' ? 'active' : ''}`}>
+            BUY
+          </span>
+        </div>
+        <div className="flex header font-weight-bold border-bottom">
+          <div className="col-4 text-center ">Amount</div>
+          <div className="col-4 text-center">Price</div>
+          <div className="col-4 text-center">Total</div>
         </div>
         <div className="flex-column flex-1">
-          <div className="asks flex-column flex-column-reverse flex-1 overflow-hidden">
+          <div
+            className={`asks flex-column flex-column-reverse flex-1 overflow-hidden ${
+              this.state.currentTab === 'buy' ? 'd-none' : ''
+            }`}>
             {asks
-              .slice(-20)
+              .slice(-16)
               .reverse()
               .toArray()
-              .map(([price, amount]) => {
+              .map(([price, amount], i) => {
+                let total = price * amount;
+                let decimals = currentMarket.amountDecimals;
                 return (
-                  <div className="ask flex align-items-center" key={price.toString()}>
-                    <div className="col-6 orderbook-amount text-right">
-                      {amount.toFixed(currentMarket.amountDecimals)}
+                  <div
+                    className={`ask flex align-items-center ${i % 2 === 0 ? 'bg-blueishWhite' : ''}`}
+                    key={price.toString()}>
+                    <div className="col-4 orderbook-amount ">
+                      {amount.toFixed(decimals) ? amount.toFixed(decimals) : '-'}
                     </div>
-                    <div className="col-6 text-danger text-right">{price.toFixed(currentMarket.priceDecimals)}</div>
+                    <div className="col-4 text-danger text-center">
+                      {price.toFixed(decimals) ? price.toFixed(decimals) : '-'}
+                    </div>
+                    <div className="col-4 text-danger text-right">
+                      {total.toFixed(decimals) ? total.toFixed(decimals) : '-'}
+                    </div>
                   </div>
                 );
               })}
           </div>
-          <div className="status border-top border-bottom">
+          <div className="status border-top border-bottom bg-blueishWhite">
             {websocketConnected ? (
-              <div className="col-6 text-success">
-                <i className="fa fa-circle" aria-hidden="true" /> RealTime
+              <div className="col-12 text-success text-right">
+                <i className="fa fa-circle" aria-hidden="true" />
+                <span className={`px-2 text-blue`}>Last Traded Price: {currentMarket.lastPrice}</span>
               </div>
             ) : (
-              <div className="col-6 text-danger">
+              <div className="col-6 text-danger text-right">
                 <i className="fa fa-circle" aria-hidden="true" /> Disconnected
               </div>
             )}
           </div>
-          <div className="bids flex-column flex-1 overflow-hidden">
+          <div
+            className={`bids flex-column flex-1 overflow-hidden ${this.state.currentTab === 'sell' ? 'd-none' : ''}`}>
             {bids
-              .slice(0, 20)
+              .slice(0, 16)
               .toArray()
-              .map(([price, amount]) => {
+              .map(([price, amount], i) => {
+                let total = price * amount;
+                let decimals = currentMarket.amountDecimals;
                 return (
-                  <div className="bid flex align-items-center" key={price.toString()}>
-                    <div className="col-6 orderbook-amount text-right">
-                      {amount.toFixed(currentMarket.amountDecimals)}
+                  <div
+                    className={`bid flex align-items-center ${i % 2 !== 0 ? 'bg-blueishWhite' : ''}`}
+                    key={price.toString()}>
+                    <div className={`col-4 orderbook-amount`}>
+                      {amount.toFixed(decimals) ? amount.toFixed(decimals) : '-'}
                     </div>
-                    <div className="col-6 text-success text-right">{price.toFixed(currentMarket.priceDecimals)}</div>
+                    <div className="col-4 text-success text-center">
+                      {price.toFixed(decimals) ? price.toFixed(decimals) : '-'}
+                    </div>
+                    <div className="col-4 text-success text-right">
+                      {total.toFixed(decimals) ? total.toFixed(decimals) : '-'}
+                    </div>
                   </div>
                 );
               })}
@@ -95,7 +138,7 @@ class OrderBook extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     asks: state.market.getIn(['orderbook', 'asks']),
     bids: state.market.getIn(['orderbook', 'bids']),

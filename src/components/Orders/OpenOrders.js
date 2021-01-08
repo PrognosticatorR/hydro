@@ -4,7 +4,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { loadOrders, cancelOrder } from '../../actions/account';
 import { getSelectedAccount } from '@gongddex/hydro-sdk-wallet';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const selectedAccount = getSelectedAccount(state);
   const address = selectedAccount ? selectedAccount.get('address') : null;
   return {
@@ -35,44 +35,49 @@ class OpenOrders extends React.PureComponent {
   render() {
     const { orders, dispatch, currentMarket } = this.props;
     return (
-      <div className="orders flex-1 position-relative overflow-hidden" ref={ref => this.setRef(ref)}>
-        <table className="table">
-          <thead>
-            <tr className="text-secondary">
-              <th className="pair-column">Pair</th>
-              <th>Side</th>
-              <th className="text-right">Price</th>
-              <th className="text-right">Amount</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {orders
-              .toArray()
-              .reverse()
-              .map(([id, order]) => {
-                if (order.availableAmount.eq(0)) {
-                  return null;
-                }
-                const symbol = order.marketID.split('-')[0];
-                return (
-                  <tr key={id}>
-                    <td className="pair-column">{order.marketID}</td>
-                    <td className={order.side === 'sell' ? 'text-danger' : 'text-success'}>{order.side}</td>
-                    <td className="text-right">{order.price.toFixed(currentMarket.priceDecimals)}</td>
-                    <td className="text-right">
-                      {order.availableAmount.toFixed(currentMarket.amountDecimals)} {symbol}
-                    </td>
-                    <td className="text-right">
-                      <button className="btn btn-outline-danger" onClick={() => dispatch(cancelOrder(order.id))}>
-                        Cancel
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+      <div
+        className="orders flex-1 position-relative overflow-hidden col-md-6 col-sm-12 border"
+        ref={(ref) => this.setRef(ref)}>
+        <div className="text-blue py-2 pl-2 border-bottom">Open Orders</div>
+        <div className="order-history-col">
+          <table className="table">
+            <thead>
+              <tr className="border-bottom">
+                <th className="pair-column font-weight-bold">Pair</th>
+                <th className="font-weight-bold">Side</th>
+                <th className="text-right font-weight-bold">Price</th>
+                <th className="text-right font-weight-bold">Amount</th>
+                <th className="text-right font-weight-bold"> Cancle</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders
+                .toArray()
+                .reverse()
+                .map(([id, order]) => {
+                  if (order.availableAmount.eq(0)) {
+                    return null;
+                  }
+                  const symbol = order.marketID.split('-')[0];
+                  return (
+                    <tr key={id}>
+                      <td className="pair-column">{order.marketID}</td>
+                      <td className={order.side === 'sell' ? 'text-danger' : 'text-success'}>{order.side}</td>
+                      <td className="text-right">{order.price.toFixed(currentMarket.priceDecimals)}</td>
+                      <td className="text-right">
+                        {order.availableAmount.toFixed(currentMarket.amountDecimals)} {symbol}
+                      </td>
+                      <td className="text-right">
+                        <button className="btn btn-outline-danger" onClick={() => dispatch(cancelOrder(order.id))}>
+                          Cancel
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }

@@ -7,7 +7,7 @@ import { enable, disable } from '../../lib/wallet';
 import { getSelectedAccount } from '@gongddex/hydro-sdk-wallet';
 import { BigNumber } from 'bignumber.js';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const selectedAccountID = state.WalletReducer.get('selectedAccountID');
   const selectedAccount = getSelectedAccount(state);
   const address = selectedAccount ? selectedAccount.get('address') : null;
@@ -62,7 +62,7 @@ class Tokens extends React.PureComponent {
                   data-toggle="tooltip"
                   data-placement="right"
                   title={toolTipTitle}
-                  ref={ref => window.$(ref).tooltip()}>
+                  ref={(ref) => window.$(ref).tooltip()}>
                   {availableBalance}
                 </div>
                 <div className="custom-control custom-switch">

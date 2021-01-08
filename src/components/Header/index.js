@@ -37,10 +37,10 @@ class Header extends React.PureComponent {
     const { currentMarket, markets, dispatch } = this.props;
     return (
       <div className="navbar navbar-expand-lg bg-blue">
-        <img className="navbar-brand" src={require('../../images/hydro.svg')} alt="hydro" />
+        <img className="navbar-brand" style={{fill:'red'}} src={require('../../images/hydro.svg')} alt="hydro" />
         <div className="dropdown navbar-nav mr-auto">
           <button
-            className="btn btn-primary header-dropdown dropdown-toggle"
+            className="btn btn-light header-dropdown dropdown-toggle"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
@@ -65,24 +65,25 @@ class Header extends React.PureComponent {
           </div>
         </div>
         <button
-          className="btn btn-primary collapse-toggle"
+          className="btn btn-light collapse-toggle"
           type="button"
           data-toggle="collapse"
           data-target="#navbar-collapse"
           aria-expanded="false">
           <i className="fa fa-bars" />
         </button>
+          <div className="item" > 
+            <WalletButton />
+          </div>
         <div className="collapse" id="navbar-collapse">
           <a
             href="https://hydroprotocol.io/developers/docs/overview/what-is-hydro.html"
-            className="btn btn-primary item"
-            target="_blank"
+            className="btn btn-light item "
+            target=" _blank"
             rel="noopener noreferrer">
             DOCUMENTATION
           </a>
-          <div className="item">
-            <WalletButton />
-          </div>
+      
 
           {this.renderAccount()}
         </div>

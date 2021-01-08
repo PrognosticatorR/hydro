@@ -23,17 +23,19 @@ class Wallet extends React.PureComponent {
     const { selectedAccountID } = this.state;
     return (
       <>
-        <div className="title flex justify-content-between align-items-center">
+        <div className="title flex justify-content-between align-items-center ml-2 ">
           <div>Wallet</div>
           <Selector
             options={OPTIONS}
             selectedValue={selectedAccountID}
-            handleClick={option => {
+            handleClick={(option) => {
               this.setState({ selectedAccountID: option.value });
             }}
           />
         </div>
-        <div className="flex-column flex-1 position-relative overflow-hidden" ref={ref => this.setRef(ref)}>
+        <div
+          className="flex-column flex-1 position-relative overflow-hidden border ml-2"
+          ref={(ref) => this.setRef(ref)}>
           {this.renderTabPanel()}
         </div>
       </>

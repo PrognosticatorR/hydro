@@ -6,15 +6,21 @@
     display: none;
 }
 
-.HydroSDK-toggleButton {
-    &:hover,
+div .HydroSDK-toggleButton {
+    background-color: $backgroundGrey !important;
+    color: $black !important;
+    border: none;
+    &:hover {
+        background-color: $lightGrey !important;
+        color: $black !important;
+    }
     &:focus,
     &:active,
     &:visited {
         outline: none;
-        background-color: #535ec3 !important;
-        border-color: #4954ac !important;
-        color: $white !important;
+        background-color: $white;
+        border-color: $grey !important;
+        color: $black !important;
         box-shadow: none;
     }
 }
@@ -25,7 +31,7 @@
         top: 100%;
         left: 0;
         right: 0;
-        background: #535ec3;
+        background: $backgroundGrey;
         z-index: 1;
         .item {
             margin: 4px 0;

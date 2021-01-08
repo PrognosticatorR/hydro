@@ -18,7 +18,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { Wallet as SDKWallet } from '@gongddex/hydro-sdk-wallet';
 import '@gongddex/hydro-sdk-wallet/index.css';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const selectedAccountID = state.WalletReducer.get('selectedAccountID');
   return {
     selectedAccountID,
@@ -77,10 +77,7 @@ class App extends React.PureComponent {
             Network Error: Switch Metamask's network to {this.getNetworkName()}.
           </span>
         )}
-        <MediaQuery minWidth={1366}>{this.renderDesktop()}</MediaQuery>
-        <MediaQuery minWidth={1024} maxWidth={1365}>
-          {this.renderLaptop()}
-        </MediaQuery>
+        <MediaQuery minWidth={1024}>{this.renderDesktop()}</MediaQuery>
         <MediaQuery minWidth={768} maxWidth={1023}>
           {this.renderTablet()}
         </MediaQuery>
@@ -150,12 +147,11 @@ class App extends React.PureComponent {
     return (
       <div className="flex-column flex-1 overflow-hidden">
         <div className="flex-column flex-1">{content}</div>
-        <div className="flex nav-tabs overflow-hidden position-relative" ref={ref => this.setRef(ref)}>
+        <div className="flex nav-tabs overflow-hidden position-relative" ref={(ref) => this.setRef(ref)}>
           <div className="nav-item flex-1 border-top d-inline-block">
             <div
               onClick={() => this.setState({ mobileTab: 'trade' })}
               className={`tab-button text-secondary text-center${selectTab === 'trade' ? ' active' : ''}`}>
-                <h1>Devesh</h1>
               Trade
             </div>
           </div>
@@ -165,8 +161,6 @@ class App extends React.PureComponent {
               className={`tab-button text-secondary text-center${selectTab === 'orders' ? ' active' : ''}`}>
               Orders
             </div>
-                <h1>Devesh</h1>
-
           </div>
           <div className="nav-item flex-1 border-top d-inline-block">
             <div
@@ -174,8 +168,6 @@ class App extends React.PureComponent {
               className={`tab-button text-secondary text-center${selectTab === 'charts' ? ' active' : ''}`}>
               Charts
             </div>
-                <h1>Devesh</h1>
-
           </div>
           <div className="nav-item flex-1 border-top d-inline-block">
             <div
@@ -205,63 +197,30 @@ class App extends React.PureComponent {
 
   renderTablet() {
     return (
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 ">
         <div className="flex-column border-right">
-          <div className="grid flex-1">
-            <Trade />
-          </div>
-        </div>
-        <div className="flex-column">
-          <div className="flex-column flex-1">
-            <div className="grid flex-1">
-              <Charts />
-            </div>
-            <Fold className="border-top flex-1 flex-column">
-              <div className="" data-fold-item-title="Orderbook">
-                <OrderBook />
-              </div>
-              <div className="" data-fold-item-title="Trade History">
-                <TradeHistory />
-              </div>
-              <div className="" data-fold-item-title="Wallet">
-                <Wallet />
-              </div>
-              <div className="" data-fold-item-title="Orders">
-                <Orders />
-              </div>
-            </Fold>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  renderLaptop() {
-    return (
-      <div className="flex flex-1 overflow-hidden">
-        <div className="flex-column border-right">
-          <div className="grid flex-1">
-            <Trade />
-          </div>
-        </div>
-        <Fold className="grid border-right flex-column">
-          <div className="grid flex-column" data-fold-item-title="Orderbook">
+          <div className="" data-fold-item-title="Orderbook">
             <OrderBook />
           </div>
-          <div className="grid flex-column" data-fold-item-title="Trade History">
-            <TradeHistory />
-          </div>
-          <div className="grid flex-column" data-fold-item-title="Wallet">
-            <Wallet />
-          </div>
-        </Fold>
+        </div>
         <div className="flex-column flex-1">
-          <div className="grid flex-2">
+          <div className="grid flex-1">
             <Charts />
           </div>
-          <div className="grid flex-1 border-top">
-            <Orders />
-          </div>
+          <Fold className="border-top flex-1 flex-column">
+            <div className="grid flex-1">
+              <Trade />
+            </div>
+            <div className="" data-fold-item-title="Trade History">
+              <TradeHistory />
+            </div>
+            <div className="" data-fold-item-title="Wallet">
+              <Wallet />
+            </div>
+            <div className="" data-fold-item-title="Orders">
+              <Orders />
+            </div>
+          </Fold>
         </div>
       </div>
     );
@@ -269,41 +228,35 @@ class App extends React.PureComponent {
 
   renderDesktop() {
     return (
-      <div className="flex flex-1 overflow-hidden">
-        <div className="flex">
-          <div className="flex-column flex-1 border-right">
+      <div>
+        <div className="flex flex-1">
+          <div className="flex-column flex-1">
             <div className="grid flex-1">
+              <OrderBook />
+            </div>
+          </div>
+          <div className="flex-column flex-1">
+            <div className="grid flex-1">
+              <Charts />
+            </div>
+            <div className="grid border-right flex-column">
               <Trade />
             </div>
           </div>
-          <div className="grid border-right flex-column">
-            <div className="title">
-              <div>
-                <div>Orderbook</div>
-                <div className="text-secondary">Available Bid and Ask orders</div>
+          <div className="flex-column">
+            <div className="grid flex-1">
+              <div className="title flex align-items-center">
+                <div>Trade History</div>
               </div>
+              <TradeHistory />
             </div>
-            <OrderBook />
+            <div className="grid flex-1 border-top">
+              <Wallet />
+            </div>
           </div>
         </div>
-        <div className="flex-column flex-1 border-right">
-          <div className="grid flex-2">
-            <Charts />
-          </div>
-          <div className="grid flex-1 border-top">
-            <Orders />
-          </div>
-        </div>
-        <div className="flex-column">
-          <div className="grid flex-1">
-            <div className="title flex align-items-center">
-              <div>Trade History</div>
-            </div>
-            <TradeHistory />
-          </div>
-          <div className="grid flex-1 border-top">
-            <Wallet />
-          </div>
+        <div className="grid flex-1 border mb-5 mt-2">
+          <Orders />
         </div>
       </div>
     );

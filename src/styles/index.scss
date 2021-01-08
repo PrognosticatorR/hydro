@@ -23,8 +23,15 @@ body {
 .bg-blue {
     background-color: $backgroundGrey;
 }
+.bg-blueishWhite {
+    background-color: $blueishWhite;
+}
+
 .bg-warning {
     background-color: #ee494c;
+}
+.text-blue {
+    color: $blue;
 }
 .text-secondary {
     color: #9b9b9b !important;

@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 import PerfectScrollbar from 'perfect-scrollbar';
 import moment from 'moment';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     tradeHistory: state.market.get('tradeHistory'),
     currentMarket: state.market.getIn(['markets', 'currentMarket'])
@@ -22,23 +22,27 @@ class TradeHistory extends React.PureComponent {
   render() {
     const { tradeHistory, currentMarket } = this.props;
     return (
-      <div className="trade-history flex-1 position-relative overflow-hidden" ref={ref => this.setRef(ref)}>
+      <div
+        className="trade-history flex-1 position-relative overflow-hidden border ml-2 mb-2"
+        ref={(ref) => this.setRef(ref)}>
         <table className="table">
           <thead>
-            <tr className="text-secondary">
-              <th className="text-right">Price</th>
-              <th className="text-right">Amount</th>
-              <th>Time</th>
+            <tr>
+              <th className="font-weight-bold">Time</th>
+              <th className="text-right font-weight-bold">Price</th>
+              <th className="text-right font-weight-bold">Amount</th>
             </tr>
           </thead>
           <tbody>
             {tradeHistory
               .toArray()
               .reverse()
-              .map(([id, trade]) => {
+              .slice(0, 16)
+              .map(([id, trade], idx) => {
                 const colorGreen = trade.takerSide === 'buy';
                 return (
-                  <tr key={trade.id}>
+                  <tr key={trade.id} className={`${idx % 2 === 0 ? 'bg-blueishWhite' : ''}`}>
+                    <td className="text-secondary">{moment(trade.executedAt).format('HH:mm:ss')}</td>
                     <td className={['text-right', colorGreen ? 'text-success' : 'text-danger'].join(' ')}>
                       {new BigNumber(trade.price).toFixed(currentMarket.priceDecimals)}
                       {trade.takerSide === 'buy' ? (
@@ -48,7 +52,6 @@ class TradeHistory extends React.PureComponent {
                       )}
                     </td>
                     <td className="text-right">{new BigNumber(trade.amount).toFixed(currentMarket.amountDecimals)}</td>
-                    <td className="text-secondary">{moment(trade.executedAt).format('HH:mm:ss')}</td>
                   </tr>
                 );
               })}
