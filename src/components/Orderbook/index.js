@@ -102,7 +102,7 @@ class OrderBook extends React.Component {
                 <span className={`px-2 text-blue`}>Last Traded Price: {currentMarket.lastPrice}</span>
               </div>
             ) : (
-              <div className="col-6 text-danger">
+              <div className="col-6 text-danger text-right">
                 <i className="fa fa-circle" aria-hidden="true" /> Disconnected
               </div>
             )}

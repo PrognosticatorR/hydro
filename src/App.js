@@ -203,26 +203,24 @@ class App extends React.PureComponent {
             <OrderBook />
           </div>
         </div>
-        <div className="flex-column">
-          <div className="flex-column flex-1">
-            <div className="grid flex-1">
-              <Charts />
-            </div>
-            <Fold className="border-top flex-1 flex-column">
-              <div className="grid flex-1">
-                <Trade />
-              </div>
-              <div className="" data-fold-item-title="Trade History">
-                <TradeHistory />
-              </div>
-              <div className="" data-fold-item-title="Wallet">
-                <Wallet />
-              </div>
-              <div className="" data-fold-item-title="Orders">
-                <Orders />
-              </div>
-            </Fold>
+        <div className="flex-column flex-1">
+          <div className="grid flex-1">
+            <Charts />
           </div>
+          <Fold className="border-top flex-1 flex-column">
+            <div className="grid flex-1">
+              <Trade />
+            </div>
+            <div className="" data-fold-item-title="Trade History">
+              <TradeHistory />
+            </div>
+            <div className="" data-fold-item-title="Wallet">
+              <Wallet />
+            </div>
+            <div className="" data-fold-item-title="Orders">
+              <Orders />
+            </div>
+          </Fold>
         </div>
       </div>
     );
@@ -231,16 +229,14 @@ class App extends React.PureComponent {
   renderDesktop() {
     return (
       <div>
-        <div className="flex flex-1 mb-20">
-          <div className="flex">
-            <div className="flex-column flex-1 border-right">
-              <div className="grid flex-1">
-                <OrderBook />
-              </div>
+        <div className="flex flex-1">
+          <div className="flex-column flex-1">
+            <div className="grid flex-1">
+              <OrderBook />
             </div>
           </div>
-          <div className="flex-column flex-1 border-right">
-            <div className="grid flex-2">
+          <div className="flex-column flex-1">
+            <div className="grid flex-1">
               <Charts />
             </div>
             <div className="grid border-right flex-column">

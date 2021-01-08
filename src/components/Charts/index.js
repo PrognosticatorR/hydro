@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { DeepChart, TradeChart } from '@wangleiddex/hydro-sdk-charts';
 import api from '../../lib/api';
+import './styles.scss';
 
 class Charts extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class Charts extends React.Component {
       loading: false,
       noData: false,
       data: [],
+      chartType: '',
       // from and to are timestamp range for fetching API
       from: null,
       to: null,
@@ -202,47 +204,55 @@ class Charts extends React.Component {
     });
     return (
       <>
-        <div className="title flex justify-content-between align-items-center">
-          <div>
-            <div>Charts</div>
+        <div className="title flex justify-content-between ">
+          <div>Charts</div>
+          <div className=" justify-content-end">
+            <i
+              onClick={() => this.setState({ chartType: '' })}
+              className={`fa fa-bar-chart px-1 chartIcon ${this.state.chartType !== 'deep' ? 'text-primary' : null} `}
+              aria-hidden="true"></i>
+            <i
+              onClick={() => this.setState({ chartType: 'deep' })}
+              className={`fa fa-bar-chart px-1  chartIcon ${this.state.chartType === 'deep' ? 'text-primary' : null} `}
+              aria-hidden="true"></i>
           </div>
         </div>
 
-        <div className="flex-column flex-1 ">
-          <div className="grid flex-2" ref={this.tradeChartWrapper}>
-            <TradeChart
-              theme="light"
-              data={this.state.data}
-              priceDecimals={5}
-              styles={{ upColor: '#00d99f', downColor: '#ff6f75', background: '#FFFFFF' }}
-              clickCallback={(result) => {
-                console.log('result: ', result);
-              }}
-              handleLoadMore={(result) => {
-                this.handleLoadMore(result.start, result.end);
-              }}
-              clickGranularity={(result) => {
-                this.loadData(result.value);
-                window.localStorage.setItem('granularityStr', result.value);
-              }}
-              start={this.state.start}
-              end={this.state.end}
-            />
-          </div>
-          <div className="grid flex-1 border-top">
-            <DeepChart
-              baseToken="HOT"
-              quoteToken="DAI"
-              styles={{ bidColor: '#00d99f', askColor: '#ff6f75', rowBackgroundColor: '#FFFFFF' }}
-              asks={asks}
-              bids={bids}
-              priceDecimals={5}
-              theme="light"
-              clickCallback={(result) => {
-                console.log('result: ', result);
-              }}
-            />
-          </div>
+        <div
+          className={`${this.state.chartType === 'deep' ? 'd-none' : 'd-block'}  grid flex-1 border`}
+          ref={this.tradeChartWrapper}>
+          <TradeChart
+            theme="light"
+            data={this.state.data}
+            priceDecimals={5}
+            styles={{ upColor: '#00d99f', downColor: '#ff6f75', background: '#FFFFFF' }}
+            clickCallback={(result) => {
+              console.log('result: ', result);
+            }}
+            handleLoadMore={(result) => {
+              this.handleLoadMore(result.start, result.end);
+            }}
+            clickGranularity={(result) => {
+              this.loadData(result.value);
+              window.localStorage.setItem('granularityStr', result.value);
+            }}
+            start={this.state.start}
+            end={this.state.end}
+          />
+        </div>
+        <div className={`${this.state.chartType !== 'deep' ? 'd-none' : ''} grid flex-1 border`}>
+          <DeepChart
+            baseToken="HOT"
+            quoteToken="DAI"
+            styles={{ bidColor: '#00d99f', askColor: '#ff6f75', rowBackgroundColor: '#FFFFFF' }}
+            asks={asks}
+            bids={bids}
+            priceDecimals={5}
+            theme="light"
+            clickCallback={(result) => {
+              console.log('result: ', result);
+            }}
+          />
         </div>
       </>
     );
