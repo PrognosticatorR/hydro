@@ -3,3 +3,9 @@
         display: none;
     }
 }
+.order-history-col {
+    height: 260px;
+    width: 100%;
+    overflow: scroll;
+    table-layout: fixed;
+}

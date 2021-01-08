@@ -78,7 +78,7 @@ class Header extends React.PureComponent {
         <div className="collapse" id="navbar-collapse">
           <a
             href="https://hydroprotocol.io/developers/docs/overview/what-is-hydro.html"
-            className="btn btn-light item mt-2"
+            className="btn btn-light item "
             target=" _blank"
             rel="noopener noreferrer">
             DOCUMENTATION

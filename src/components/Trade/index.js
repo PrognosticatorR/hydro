@@ -14,7 +14,7 @@ import { sleep, toUnitAmount } from '../../lib/utils';
 import { getSelectedAccount } from '@gongddex/hydro-sdk-wallet';
 import { stateUtils } from '../../selectors/account';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const selector = formValueSelector(TRADE_FORM_ID);
   const bids = state.market.getIn(['orderbook', 'bids']);
   const asks = state.market.getIn(['orderbook', 'asks']);
@@ -96,13 +96,13 @@ class Trade extends React.PureComponent {
 
     return (
       <>
-        <div className="title">
+        <div className="title bg-blueishWhite">
           <div>
             <div>{currentMarket.id}</div>
             <div className="text-secondary">Make a Limit Order</div>
           </div>
         </div>
-        <div className="trade flex-1 flex-column">
+        <div className="trade flex-1 flex-column border">
           <ul className="nav nav-tabs">
             <li className="nav-item flex-1 flex">
               <div
@@ -119,7 +119,7 @@ class Trade extends React.PureComponent {
               </div>
             </li>
           </ul>
-          <div className="flex flex-1 position-relative overflow-hidden" ref={ref => this.setRef(ref)}>
+          <div className="flex flex-1 position-relative overflow-hidden" ref={(ref) => this.setRef(ref)}>
             <form
               className="form flex-column text-secondary flex-1 justify-content-between"
               onSubmit={handleSubmit(() => this.submit())}>
@@ -176,7 +176,7 @@ class Trade extends React.PureComponent {
           <input className="form-control" {...input} {...attrs} />
           <span className="text-secondary unit">{unit}</span>
         </div>
-        <span className="text-danger">{submitFailed && (error && <span>{error}</span>)}</span>
+        <span className="text-danger">{submitFailed && error && <span>{error}</span>}</span>
       </div>
     );
   };

@@ -5,7 +5,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import { getSelectedAccount } from '@gongddex/hydro-sdk-wallet';
 import BigNumber from 'bignumber.js';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const selectedAccount = getSelectedAccount(state);
   const address = selectedAccount ? selectedAccount.get('address') : null;
   return {
@@ -38,57 +38,62 @@ class Trades extends React.PureComponent {
   render() {
     const { trades, address, currentMarket } = this.props;
     return (
-      <div className="trades flex-1 position-relative overflow-hidden" ref={ref => this.setRef(ref)}>
-        <table className="table">
-          <thead>
-            <tr className="text-secondary">
-              <th className="pair-column">Pair</th>
-              <th>Side</th>
-              <th className="text-right">Price</th>
-              <th className="text-right">Amount</th>
-              <th className="text-right">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {trades
-              .toArray()
-              .reverse()
-              .map(([id, trade]) => {
-                let side;
-                if (trade.taker === address) {
-                  side = trade.takerSide;
-                } else {
-                  side = trade.takerSide === 'buy' ? 'sell' : 'buy';
-                }
+      <div
+        className="trades flex-1 position-relative overflow-hidden border col-md-6 col-sm-12"
+        ref={(ref) => this.setRef(ref)}>
+        <div className="text-blue py-2 border-bottom">Order History</div>
+        <div className="order-history-col">
+          <table className="table ">
+            <thead>
+              <tr className="border-bottom">
+                <th className="pair-column font-weight-bold">Pair</th>
+                <th className="font-weight-bold">Side</th>
+                <th className="text-right font-weight-bold">Price</th>
+                <th className="text-right font-weight-bold">Amount</th>
+                <th className="text-right font-weight-bold">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {trades
+                .toArray()
+                .reverse()
+                .map(([id, trade]) => {
+                  let side;
+                  if (trade.taker === address) {
+                    side = trade.takerSide;
+                  } else {
+                    side = trade.takerSide === 'buy' ? 'sell' : 'buy';
+                  }
 
-                let status;
-                let className = 'text-right ';
-                if (trade.status === 'successful') {
-                  status = <i className="fa fa-check" aria-hidden="true" />;
-                  className += 'text-success';
-                } else if (trade.status === 'pending') {
-                  status = <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true" />;
-                } else {
-                  className += 'text-danger';
-                  status = <i className="fa fa-close" aria-hidden="true" />;
-                }
-                const symbol = trade.marketID.split('-')[0];
-                return (
-                  <tr key={id}>
-                    <td className="pair-column">{trade.marketID}</td>
-                    <td className={`${side === 'sell' ? 'text-danger' : 'text-success'}`}>{side}</td>
-                    <td className={`text-right${side === 'sell' ? ' text-danger' : ' text-success'}`}>
-                      {new BigNumber(trade.price).toFixed(currentMarket.priceDecimals)}
-                    </td>
-                    <td className="text-right">
-                      {new BigNumber(trade.amount).toFixed(currentMarket.amountDecimals)} {symbol}
-                    </td>
-                    <td className={className}>{status}</td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+                  let status;
+                  let className = 'text-right ';
+                  if (trade.status === 'successful') {
+                    status = <i className="fa fa-check" aria-hidden="true" />;
+                    className += 'text-success';
+                  } else if (trade.status === 'pending') {
+                    status = <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true" />;
+                  } else {
+                    className += 'text-danger';
+                    status = <i className="fa fa-close" aria-hidden="true" />;
+                  }
+                  const symbol = trade.marketID.split('-')[0];
+                  return (
+                    <tr key={id}>
+                      <td className="pair-column">{trade.marketID}</td>
+                      <td className={`${side === 'sell' ? 'text-danger' : 'text-success'}`}>{side}</td>
+                      <td className={`text-right${side === 'sell' ? ' text-danger' : ' text-success'}`}>
+                        {new BigNumber(trade.price).toFixed(currentMarket.priceDecimals)}
+                      </td>
+                      <td className="text-right">
+                        {new BigNumber(trade.amount).toFixed(currentMarket.amountDecimals)} {symbol}
+                      </td>
+                      <td className={className}>{status}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
