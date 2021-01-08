@@ -77,10 +77,7 @@ class App extends React.PureComponent {
             Network Error: Switch Metamask's network to {this.getNetworkName()}.
           </span>
         )}
-        <MediaQuery minWidth={1366}>{this.renderDesktop()}</MediaQuery>
-        <MediaQuery minWidth={1024} maxWidth={1365}>
-          {this.renderLaptop()}
-        </MediaQuery>
+        <MediaQuery minWidth={1024}>{this.renderDesktop()}</MediaQuery>
         <MediaQuery minWidth={768} maxWidth={1023}>
           {this.renderTablet()}
         </MediaQuery>
@@ -200,7 +197,7 @@ class App extends React.PureComponent {
 
   renderTablet() {
     return (
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 ">
         <div className="flex-column border-right">
           <div className="" data-fold-item-title="Orderbook">
             <OrderBook />
@@ -225,37 +222,6 @@ class App extends React.PureComponent {
                 <Orders />
               </div>
             </Fold>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  renderLaptop() {
-    return (
-      <div className="flex flex-1 ">
-        <div className="flex-column border-right ">
-          <div className="grid flex-column mr-5" data-fold-item-title="Orderbook">
-            <OrderBook />
-          </div>
-        </div>
-        <Fold className="grid border-right flex-column">
-          <div className="grid flex-1">
-            <Trade />
-          </div>
-          <div className="grid flex-column" data-fold-item-title="Trade History">
-            <TradeHistory />
-          </div>
-          <div className="grid flex-column" data-fold-item-title="Wallet">
-            <Wallet />
-          </div>
-        </Fold>
-        <div className="flex-column flex-1">
-          <div className="grid flex-2">
-            <Charts />
-          </div>
-          <div className="grid flex-1 border-top">
-            <Orders />
           </div>
         </div>
       </div>

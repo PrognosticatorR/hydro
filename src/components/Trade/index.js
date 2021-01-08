@@ -299,7 +299,7 @@ const validate = (values, props) => {
     _total = new BigNumber(total);
     if (side === 'buy') {
       const quoteTokenAmount = toUnitAmount(quoteTokenBalance, currentMarket.quoteTokenDecimals);
-
+      console.log(quoteTokenAmount);
       if (_total.gt(quoteTokenAmount)) {
         errors.amount = `Insufficient ${currentMarket.quoteToken} balance`;
       }

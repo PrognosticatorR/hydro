@@ -1,7 +1,6 @@
 import React from 'react';
 import OpenOrders from './OpenOrders';
 import Trades from './Trades';
-import Selector from '../Selector';
 import './styles.scss';
 
 const OPTIONS = [

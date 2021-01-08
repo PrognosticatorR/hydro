@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { DeepChart, TradeChart } from '@wangleiddex/hydro-sdk-charts';
-// import { testData } from './constants'; # we can use testData to show what TradeChart looks like
 import api from '../../lib/api';
 
 class Charts extends React.Component {
@@ -75,9 +74,7 @@ class Charts extends React.Component {
     let res;
     try {
       res = await api.get(
-        `/markets/${this.props.currentMarket.id}/candles?from=${params.from}&to=${params.to}&granularity=${
-          params.granularityNum
-        }`
+        `/markets/${this.props.currentMarket.id}/candles?from=${params.from}&to=${params.to}&granularity=${params.granularityNum}`
       );
       if (res.data.data.meta && res.data.data.meta.noData) {
         this.setState({ loading: false, noData: true });
@@ -191,13 +188,13 @@ class Charts extends React.Component {
   }
 
   render() {
-    const bids = this.props.bids.toArray().map(priceLevel => {
+    const bids = this.props.bids.toArray().map((priceLevel) => {
       return {
         price: priceLevel[0].toString(),
         amount: priceLevel[1].toString()
       };
     });
-    const asks = this.props.asks.toArray().map(priceLevel => {
+    const asks = this.props.asks.toArray().map((priceLevel) => {
       return {
         price: priceLevel[0].toString(),
         amount: priceLevel[1].toString()
@@ -218,13 +215,13 @@ class Charts extends React.Component {
               data={this.state.data}
               priceDecimals={5}
               styles={{ upColor: '#00d99f', downColor: '#ff6f75', background: '#FFFFFF' }}
-              clickCallback={result => {
+              clickCallback={(result) => {
                 console.log('result: ', result);
               }}
-              handleLoadMore={result => {
+              handleLoadMore={(result) => {
                 this.handleLoadMore(result.start, result.end);
               }}
-              clickGranularity={result => {
+              clickGranularity={(result) => {
                 this.loadData(result.value);
                 window.localStorage.setItem('granularityStr', result.value);
               }}
@@ -241,7 +238,7 @@ class Charts extends React.Component {
               bids={bids}
               priceDecimals={5}
               theme="light"
-              clickCallback={result => {
+              clickCallback={(result) => {
                 console.log('result: ', result);
               }}
             />
@@ -252,7 +249,7 @@ class Charts extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     asks: state.market.getIn(['orderbook', 'asks']),
     bids: state.market.getIn(['orderbook', 'bids']),

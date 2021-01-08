@@ -72,7 +72,7 @@ class OrderBook extends React.Component {
               this.state.currentTab === 'buy' ? 'd-none' : ''
             }`}>
             {asks
-              .slice(-15)
+              .slice(-16)
               .reverse()
               .toArray()
               .map(([price, amount], i) => {
@@ -110,7 +110,7 @@ class OrderBook extends React.Component {
           <div
             className={`bids flex-column flex-1 overflow-hidden ${this.state.currentTab === 'sell' ? 'd-none' : ''}`}>
             {bids
-              .slice(0, 15)
+              .slice(0, 16)
               .toArray()
               .map(([price, amount], i) => {
                 let total = price * amount;
