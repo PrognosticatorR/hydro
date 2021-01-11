@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { DeepChart, TradeChart } from '@wangleiddex/hydro-sdk-charts';
-import api from '../../lib/api';
 import './styles.scss';
-
+import CandleStick from './CandleStick.js';
+import { testData } from './constants';
+import api from '../../lib/api';
 class Charts extends React.Component {
   constructor(props) {
     super(props);
@@ -88,10 +89,13 @@ class Charts extends React.Component {
     }
 
     const newData = res.data.data.candles;
+
     for (let i = 0; i < newData.length; i++) {
       if (`${newData[i].time}`.length === 10) {
         newData[i].time = newData[i].time * 1000;
+        newData[i].date = new Date(newData[i].time);
       }
+      newData[i].date = new Date(newData[i].time);
     }
     const changeState = {
       data: newData,
@@ -99,7 +103,8 @@ class Charts extends React.Component {
       to: params.to,
       start: null,
       end: null,
-      lastUpdatedAt: new Date().getTime()
+      lastUpdatedAt: new Date().getTime(),
+      loading: false
     };
 
     if (granularityIsSame) {
@@ -221,24 +226,7 @@ class Charts extends React.Component {
         <div
           className={`${this.state.chartType === 'deep' ? 'd-none' : 'd-block'}  grid flex-1 border`}
           ref={this.tradeChartWrapper}>
-          <TradeChart
-            theme="light"
-            data={this.state.data}
-            priceDecimals={5}
-            styles={{ upColor: '#00d99f', downColor: '#ff6f75', background: '#FFFFFF' }}
-            clickCallback={(result) => {
-              console.log('result: ', result);
-            }}
-            handleLoadMore={(result) => {
-              this.handleLoadMore(result.start, result.end);
-            }}
-            clickGranularity={(result) => {
-              this.loadData(result.value);
-              window.localStorage.setItem('granularityStr', result.value);
-            }}
-            start={this.state.start}
-            end={this.state.end}
-          />
+          {!this.state.loading ? <CandleStick data={this.state.data} type="hybrid" /> : 'loading'}
         </div>
         <div className={`${this.state.chartType !== 'deep' ? 'd-none' : ''} grid flex-1 border`}>
           <DeepChart
